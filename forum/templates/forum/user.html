@@ -1,0 +1,47 @@
+<!-- REQUIREMENTS: 
+userToShow: The user to display.
+posts: What posts from the user to display
+comments: The comments from the user to display.
+-->
+<head>
+<style>
+td {border: 1px solid #dddddd;}
+</style>
+</head>
+
+<center> <font size = "+30"> <b> Owen Forums </b> </font> </center>
+
+<center> [<a href="{%url 'firstPage'%}">Home</a>] 
+{% if current_user%}
+[<a href="{% url 'user' current_user.pk%}">{{current_user.name}}</a>] [<a href="{%url 'logout'%}">Logout</a>] [<a href="{%url 'submitPost'%}">New Post</a>]
+{% else %}
+[<a href="{%url 'login'%}">Login</a>] [<a href="{%url 'signup'%}">Signup</a>]
+{% endif%}
+</center>
+
+<hr></hr>
+
+<h1> {{userToShow.name}} </h1>
+<br>
+
+Posts:
+<table style = "width:100%">
+{%for post in posts%}
+<tr>
+	<td> <a href="{% url 'user' post.user.pk%}"> {{post.user.name}} </a></td>
+	<td> <a href="{% url 'post' post.pk 1%}"> {{post.subject}} </a></td>
+	<td> {{post.date}} </td>
+</tr>
+{%endfor%}
+</table> 
+
+Comments: 
+<table style = "width:100%">
+{%for comment in comments%}
+<tr>
+	<td> <a href="{% url 'user' comment.post.user.pk%}"> {{comment.post.user.name}} </a></td>
+	<td> <a href="{% url 'post' comment.post.pk 1%}"> {{comment.content}} </a></td>
+	<td> {{comment.post.date}} </td>
+</tr>
+{%endfor%}
+</table>

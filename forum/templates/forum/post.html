@@ -1,0 +1,40 @@
+<!-- REQUIREMENTS: 
+page_number: The page being displayed.
+post: The post to display.
+comments: The comments to display.
+-->
+<head>
+<style>
+td {border: 1px solid #dddddd;}
+</style>
+</head>
+
+<center> <font size = "+30"> <b> Owen Forums </b> </font> </center>
+
+<center> [<a href="{%url 'firstPage'%}">Home</a>] 
+{% if current_user%}
+[<a href="{% url 'user' current_user.pk%}">{{current_user.name}}</a>] [<a href="{%url 'logout'%}">Logout</a>] [<a href="{%url 'submitPost'%}">New Post</a>]
+{% else %}
+[<a href="{%url 'login'%}">Login</a>] [<a href="{%url 'signup'%}">Signup</a>]
+{% endif%}
+</center>
+
+<hr></hr>
+
+<h1>{{post.subject}} <i>by <a href={% url "user" post.user.pk%}>{{post.user}}</a></i></h1><br>
+{{post.content}}
+
+<hr></hr>
+<h2> Page {{page_number}} </h2>
+{% for i in comments %}
+<b> <a href="{% url 'user' i.user.pk %}">{{i.user}}</a>: </b>{{i.content}}<br>
+{% endfor %}
+
+<hr></hr>
+
+{% if page_number != 1 %}
+[<a href="{% url 'post' post.pk page_number|add:"-1" %}">&lt Previous Page</a>]
+{%endif%}
+[<a href="{% url 'post' post.pk page_number|add:"1" %}">Next Page &gt</a>]
+<br><a href="{% url 'submitComment' post.pk%}"> Submit a comment... </a><br>
+

@@ -1,0 +1,48 @@
+<!-- REQUIREMENTS: 
+page_number: The page being displayed.
+to_display: The posts to show.
+-->
+
+<head>
+<style>
+td {border: 1px solid #dddddd;}
+</style>
+</head>
+
+<center> <font size = "+30"> <b> Owen Forums </b> </font> </center>
+
+<center> [<a href="{%url 'firstPage'%}">Home</a>] 
+{% if current_user%}
+[<a href="{% url 'user' current_user.pk%}">{{current_user.name}}</a>] [<a href="{%url 'logout'%}">Logout</a>] [<a href="{%url 'submitPost'%}">New Post</a>]
+{% else %}
+[<a href="{%url 'login'%}">Login</a>] [<a href="{%url 'signup'%}">Signup</a>]
+{% endif%}
+</center>
+
+<hr></hr>
+
+Pinned Messages:
+<table style = "width:100%">
+<!--Not yet enabled...-->
+<tr>
+	<td> None yet! </td>
+</tr>
+</table>
+
+<hr></hr>
+
+Page {{page_number}}
+<table style = "width:100%">
+{%for post in to_display%}
+<tr>
+	<td> <a href="{% url 'user' post.user.pk%}"> {{post.user.name}} </a></td>
+	<td> <a href="{% url 'post' post.pk 1%}"> {{post.subject}} </a></td>
+	<td> {{post.date}} </td>
+</tr>
+{%endfor%}
+</table>
+
+{% if page_number != 1 %}
+[<a href="{% url 'home' page_number|add:"-1" %}">&lt Previous Page</a>]
+{%endif%}
+[<a href="{% url 'home' page_number|add:"1" %}">Next Page &gt</a>]
